@@ -1,0 +1,17 @@
+{
+  "name": "school_ms",
+  "version": "1.0.0",
+  "description": "this is simple school management system for my collection course for junior developer, happy coding!  ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Irpan Abdul Rahman",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "express": "^4.18.1",
+    "hbs": "^4.2.0",
+    "mysql": "^2.18.1"
+  }
+}
