@@ -1,6 +1,7 @@
 const path = require('path');
 const express = require('express');
 const hbs = require('hbs');
+hbs.registerHelper('dateFormat', require('handlebars-dateformat'));
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const app = express();
@@ -50,6 +51,17 @@ app.post('/save', (req, res) => {
 		if(err) throw err;
 		res.redirect('/');
 	}); 	
+});
+
+//update data student
+app.post('/update', (req, res) => {
+	let sql = `UPDATE students SET fullname='${req.body.fullname}', place_of_birth='${req.body.place_of_birth}',
+	date_of_birth='${req.body.date_of_birth}', address='${req.body.address}' WHERE number_id='${req.body.number_id}'`;
+
+	let query = conn.query(sql, (err, results) => {
+		if(err) throw err;
+		res.redirect('/');
+	});
 });
 
 //running app

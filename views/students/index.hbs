@@ -25,11 +25,11 @@
         <tr>
           <td>{{ number_id }}</td>
           <td>{{ fullname }}</td>
-          <td>{{ date_of_birth }}</td>
+          <td>{{ dateFormat date_of_birth "D MMMM YYYY" }}</td>
           <td>{{ place_of_birth }}</td>
           <td>{{ address }}</td>
           <td class="row">
-            <a href="javascript:void(0);" class="col btn btn-sm btn-info edit mr-2 text-xs" data-id="{{ number_id }}" data-name="{{ fullname }}" data-date_of_birth="{{ date_of_birth }}" data-place_of_birth="{{ place_of_birth }}"
+            <a href="javascript:void(0);" class="col btn btn-sm btn-info edit mr-2 text-xs" data-number_id="{{ number_id }}" data-fullname="{{ fullname }}" data-date_of_birth="{{dateFormat date_of_birth 'YYYY-MM-DD'}}" data-place_of_birth="{{ place_of_birth }}"
             data-address="{{ address }}"><i class="far fa-edit"></i></a>
             <a href="javascript:void(0);" class="col btn btn-sm btn-danger delete text-xs" data-id="{{ number_id }}"><i class="far fa-trash-alt"></i></a>
           </td>
@@ -39,8 +39,8 @@
     </table>
   </div>
 
-    <!-- Modal Add Student -->
-    <form action="/save" method="post">
+  <!-- Modal Add Student -->
+  <form action="/save" method="post">
       <div class="modal fade" id="modalAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
        <div class="modal-dialog" role="document">
          <div class="modal-content">
@@ -78,7 +78,69 @@
          </div>
        </div>
       </div>
-   </form>
-   <script src="/assets/js/jquery-3.6.0.js"></script>
+  </form>
+
+  <!-- Modal Update Student -->
+  <form action="/update" method="post">
+      <div class="modal fade" id="modalUpdate" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+       <div class="modal-dialog" role="document">
+         <div class="modal-content">
+           <div class="modal-header">
+             <h5 class="modal-title" id="exampleModalLabel">Add New Student</h5>
+             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+             </button>
+           </div>
+           <div class="modal-body">
+             <div class="form-group">
+                 <input readonly type="text" name="number_id" max="10" class="number_id form-control" placeholder="Number ID" required>
+             </div>
+
+             <div class="form-group">
+                 <input type="text" name="fullname" class="fullname form-control" placeholder="Fullname" required>
+             </div>
+
+             <div class="form-group">
+                 <input type="text" name="place_of_birth" class="place_of_birth form-control" placeholder="Place Of Birth" required>
+             </div>
+
+             <div class="form-group">
+                 <input type="date" name="date_of_birth" class="date_of_birth form-control" placeholder="Date Of Birth" required>
+             </div>
+
+             <div class="form-group">
+                 <input type="text" name="address" class="address form-control" placeholder="Address" required>
+             </div>
+           </div>
+           <div class="modal-footer">
+             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+             <button type="submit" class="btn btn-primary">Update</button>
+           </div>
+         </div>
+       </div>
+      </div>
+  </form>
+
+  <script src="/assets/js/jquery-3.6.0.js"></script>
   <script src="/assets/js/bootstrap.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      //modal update
+      $('#studentTable').on('click', '.edit', function(){
+        var number_id = $(this).data('number_id');
+        var fullname = $(this).data('fullname');
+        var place_of_birth = $(this).data('place_of_birth');
+        var date_of_birth = $(this).data('date_of_birth');
+        var address = $(this).data('address');
+
+        $('#modalUpdate').modal('show');
+
+        $('.number_id').val(number_id);
+        $('.fullname').val(fullname);
+        $('.place_of_birth').val(place_of_birth);
+        $('.date_of_birth').val(date_of_birth);
+        $('.address').val(address);
+      });
+    });
+  </script>
 </body>
