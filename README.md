@@ -24,6 +24,7 @@ Install the dependencies and devDependencies and start the server.
 ```sh
 cd school_ms
 npm i
+mkdir public/upload
 node index.js
 ```
 
