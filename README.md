@@ -37,7 +37,7 @@ node index.js
     - [x] List Students
     - [x] Create Student
     - [x] Update Student
-    - [ ] Delete Student
+    - [x] Delete Student
 - [ ] CRUD Teachers
     - [ ] List Teachers
     - [ ] Create Teacher

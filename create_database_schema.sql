@@ -6,6 +6,8 @@ CREATE TABLE students(
  id INT(11) PRIMARY KEY AUTO_INCREMENT,
  number_id VARCHAR(10) UNIQUE,   
  fullname VARCHAR(200),
+ gender ENUM('male','female'),
+ photo VARCHAR(250),
  place_of_birth VARCHAR(150),
  date_of_birth DATE,
  address VARCHAR(250)

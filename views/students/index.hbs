@@ -13,9 +13,11 @@
       <thead>
         <tr>
           <th>ID</th>
+          <th>Photo</th>
           <th>Name</th>
-          <th>Date Of Birth</th>
-          <th>Place Of Birth</th>
+          <th>Gender</th>
+          <th>Birthdate</th>
+          <th>Birthplace</th>
           <th>Address</th>
           <th>Action</th>
         </tr>
@@ -24,12 +26,14 @@
          {{#each results}}
         <tr>
           <td>{{ number_id }}</td>
+          <td><img src="/assets/upload/{{ photo }}" height="70px" width="70px" alt="{{ photo }}"></td>
           <td>{{ fullname }}</td>
+          <td>{{ gender }}</td>
           <td>{{ dateFormat date_of_birth "D MMMM YYYY" }}</td>
           <td>{{ place_of_birth }}</td>
           <td>{{ address }}</td>
           <td class="row">
-            <a href="javascript:void(0);" class="col btn btn-sm btn-info edit mr-2 text-xs" data-number_id="{{ number_id }}" data-fullname="{{ fullname }}" data-date_of_birth="{{dateFormat date_of_birth 'YYYY-MM-DD'}}" data-place_of_birth="{{ place_of_birth }}"
+            <a href="javascript:void(0);" class="col btn btn-sm btn-info edit mr-2 text-xs" data-number_id="{{ number_id }}" data-photo="{{ photo }}" data-fullname="{{ fullname }}" data-gender="{{ gender }}" data-date_of_birth="{{dateFormat date_of_birth 'YYYY-MM-DD'}}" data-place_of_birth="{{ place_of_birth }}"
             data-address="{{ address }}"><i class="far fa-edit"></i></a>
             <a href="javascript:void(0);" class="col btn btn-sm btn-danger delete text-xs" data-id="{{ number_id }}"><i class="far fa-trash-alt"></i></a>
           </td>
@@ -40,7 +44,7 @@
   </div>
 
   <!-- Modal Add Student -->
-  <form action="/save" method="post">
+  <form action="/save" method="post" enctype="multipart/form-data">
       <div class="modal fade" id="modalAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
        <div class="modal-dialog" role="document">
          <div class="modal-content">
@@ -51,13 +55,25 @@
              </button>
            </div>
            <div class="modal-body">
-             <div class="form-group">
-                 <input type="text" name="number_id" max="10" class="form-control" placeholder="Number ID" required>
-             </div>
+              <div class="form-group">
+                <input type="text" name="number_id" max="10" class="form-control" placeholder="Number ID" required>
+              </div>
 
-             <div class="form-group">
-                 <input type="text" name="fullname" class="form-control" placeholder="Fullname" required>
-             </div>
+              <div class="form-group">
+                <input type="text" name="fullname" class="form-control" placeholder="Fullname" required>
+              </div>
+
+              <div class="form-group">
+                <input type="file" name="photo" class="form-control" placeholder="Photo" accept="image/*" required>
+              </div>
+
+              <div class="form-group">
+                <select class="form-control" name="gender" required>
+                    <option value="" disabled selected>Select Gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+              </div>
 
              <div class="form-group">
                  <input type="text" name="place_of_birth" class="form-control" placeholder="Place Of Birth" required>
@@ -81,7 +97,7 @@
   </form>
 
   <!-- Modal Update Student -->
-  <form action="/update" method="post">
+  <form action="/update" method="post" enctype="multipart/form-data">
       <div class="modal fade" id="modalUpdate" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
        <div class="modal-dialog" role="document">
          <div class="modal-content">
@@ -98,6 +114,19 @@
 
              <div class="form-group">
                  <input type="text" name="fullname" class="fullname form-control" placeholder="Fullname" required>
+             </div>
+
+             <div class="form-group">
+                  <img class="photo" height="70px" width="70px" alt="{{ photo }}" class="form-control">
+                  <input type="file" name="photo" class="photo form-control" placeholder="Photo" accept="image/*">
+             </div>
+
+             <div class="form-group">
+                <select class="form-control gender" name="gender" required>
+                    <option value="" disabled selected>Select Gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
              </div>
 
              <div class="form-group">
@@ -121,6 +150,28 @@
       </div>
   </form>
 
+  <!-- Modal delete student -->
+  <form id="add-row-form" action="/delete" method="post">
+     <div class="modal fade" id="modelDelete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">Delete Student</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              </div>
+              <div class="modal-body">
+                <strong>Are you sure for delete this data?</strong>
+              </div>
+              <div class="modal-footer">
+                  <input type="hidden"  name="number_id" class="form-control number_id_del" required>
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-success">Delete</button>
+              </div>
+          </div>
+        </div>
+     </div>
+ </form>
+
   <script src="/assets/js/jquery-3.6.0.js"></script>
   <script src="/assets/js/bootstrap.js"></script>
   <script type="text/javascript">
@@ -128,19 +179,30 @@
       //modal update
       $('#studentTable').on('click', '.edit', function(){
         var number_id = $(this).data('number_id');
+        var photo = $(this).data('photo');
         var fullname = $(this).data('fullname');
+        var gender = $(this).data('gender');
         var place_of_birth = $(this).data('place_of_birth');
         var date_of_birth = $(this).data('date_of_birth');
         var address = $(this).data('address');
 
         $('#modalUpdate').modal('show');
 
-        $('.number_id').val(number_id);
+        $('.number_id').val(number_id); 
+        $('.photo').attr("src", '/assets/upload/'+photo);
         $('.fullname').val(fullname);
+        $('.gender').val(gender).change();
         $('.place_of_birth').val(place_of_birth);
         $('.date_of_birth').val(date_of_birth);
         $('.address').val(address);
       });
+    });
+
+    //modal delete
+    $('#studentTable').on('click', '.delete', function(){
+      var number_id = $(this).data('id');
+      $('#modelDelete').modal('show');
+      $('.number_id_del').val(number_id);
     });
   </script>
 </body>
