@@ -33,15 +33,9 @@ node index.js
 #### School MS Task List
 
 - [x] Create Database Schema Table Students
-- [ ] Create Database Schema Table Teachers
 - [x] CRUD Students
     - [x] List Students
     - [x] Create Student
     - [x] Update Student
     - [x] Delete Student
-- [ ] CRUD Teachers
-    - [ ] List Teachers
-    - [ ] Create Teacher
-    - [ ] Update Teacher
-    - [ ] Delete Teacher
 
